@@ -29,6 +29,13 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
 const menuItems = [
   { label: "Dashboard", icon: LayoutDashboard, href: "/" },
   { label: "Users", icon: Users, href: "/users" },
@@ -62,33 +69,45 @@ export function AppSidebar() {
     icon: React.ElementType;
     href: string;
     badge?: string;
-  }) => (
-    <SidebarMenuItem key={label}>
-      <SidebarMenuButton asChild isActive={isActive(href)}>
-        <Link href={href} className="flex items-center gap-2">
-          <Icon className="h-5 w-5 shrink-0" />
-          <span className="group-[.collapsed]:hidden">{label}</span>
-        </Link>
-      </SidebarMenuButton>
-      {badge && (
-        <SidebarMenuBadge className="bg-red-500 text-white group-[.collapsed]:hidden">
-          {badge}
-        </SidebarMenuBadge>
-      )}
-    </SidebarMenuItem>
-  );
+  }) => {
+    const active = isActive(href);
+    const baseClasses = active
+      ? "bg-white text-teal-800 "
+      : "hover:bg-teal-700 text-white";
+
+    return (
+      <SidebarMenuItem key={label}>
+        <SidebarMenuButton asChild isActive={active}>
+          <Link
+            href={href}
+            className={`flex items-center gap-2 rounded px-3 py-2 ${baseClasses}`}
+          >
+            <TooltipProvider delayDuration={200}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Icon className="h-5 w-5 shrink-0" />
+                </TooltipTrigger>
+                <TooltipContent
+                  side="right"
+                  className="group-[.collapsed]:block hidden"
+                >
+                  {label}
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+
+            <span className="group-[.collapsed]:hidden">{label}</span>
+          </Link>
+        </SidebarMenuButton>
+      </SidebarMenuItem>
+    );
+  };
 
   return (
-    <Sidebar className="bg-teal-800 text-white border-none">
+    <Sidebar className="bg-[#076271] text-white border-none">
       {/* Header */}
       <div className="flex items-center justify-between p-4 h-16">
-        <Link href="/" className="flex items-center gap-2 text-xl font-bold">
-          <span className="text-teal-400">DELIVER</span>
-          <span className="text-white">MEE</span>
-        </Link>
-        <SidebarTrigger className="text-white hover:text-teal-200">
-          <ChevronLeft className="h-5 w-5" />
-        </SidebarTrigger>
+        <img src="/logo.png" alt="deliver me" className="h-6" />
       </div>
 
       {/* Main Menu */}
@@ -101,7 +120,7 @@ export function AppSidebar() {
         <SidebarMenu>{footerItems.map(renderMenuItem)}</SidebarMenu>
       </SidebarFooter>
 
-      {/* Sidebar Rail */}
+      {/* Rail View */}
       <SidebarRail />
     </Sidebar>
   );

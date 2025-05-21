@@ -25,10 +25,12 @@ export function DashboardHeader() {
   };
 
   return (
-    <header className="h-16 border-b bg-white flex items-center justify-between px-6 shadow-md">
-      <div className="text-gray-500">{getBreadcrumb()}</div>
-      <div className="flex items-center gap-4">
-        <div className="relative w-64">
+    <header className="h-16 border-b bg-white flex items-center justify-between px-4 md:px-6 shadow-md">
+      <div className="text-gray-500 text-sm md:text-base truncate max-w-[50vw] sm:max-w-xs">
+        {getBreadcrumb()}
+      </div>
+      <div className="flex items-center gap-2 sm:gap-4">
+        <div className="relative w-36 sm:w-48 md:w-64 hidden xs:block">
           <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
           <Input
             placeholder="Search"
@@ -40,7 +42,7 @@ export function DashboardHeader() {
           <span className="absolute top-1 right-1 h-2 w-2 bg-red-500 rounded-full"></span>
         </Button>
         <Avatar>
-          <AvatarImage src="/placeholder.svg?height=32&width=32" alt="User" />
+          <AvatarImage src="https://i.pravatar.cc/40" alt="User" />
           <AvatarFallback>U</AvatarFallback>
         </Avatar>
       </div>
