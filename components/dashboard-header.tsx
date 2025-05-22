@@ -25,9 +25,9 @@ export function DashboardHeader() {
   };
 
   return (
-    <header className="h-16 border-b bg-white flex items-center justify-between px-4 md:px-6 shadow-md">
-      <div className="text-gray-500 text-sm md:text-base truncate max-w-[50vw] sm:max-w-xs">
-        {getBreadcrumb()}
+    <header className="h-16 border-b bg-white flex items-center justify-between px-4 md:px-6 ">
+      <div className="text-gray-500 text-sm md:text-base truncate max-w-[50vw] sm:max-w-xs ">
+        <div className="md:block hidden">{getBreadcrumb()}</div>
       </div>
       <div className="flex items-center gap-2 sm:gap-4">
         <div className="relative w-36 sm:w-48 md:w-64 hidden xs:block">

@@ -31,6 +31,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Link from "next/link";
 
 // Define the user data type
 type User = {
@@ -88,14 +89,14 @@ export function UsersTable() {
         <p className="text-sm text-gray-500">All the recent users</p>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 my-4">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 my-4 w-full">
           <div className="relative w-full md:w-64">
             <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-            <Input placeholder="Search" className="pl-8" />
+            <Input placeholder="Search" className="pl-8 w-full" />
           </div>
-          <div className="flex items-center gap-2 w-full md:w-auto">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full md:w-auto">
             <Select defaultValue="name">
-              <SelectTrigger className="w-[180px]">
+              <SelectTrigger className="w-full sm:w-[180px]">
                 <SelectValue placeholder="Sort By" />
               </SelectTrigger>
               <SelectContent>
@@ -104,14 +105,17 @@ export function UsersTable() {
                 <SelectItem value="deliveries">Deliveries</SelectItem>
               </SelectContent>
             </Select>
-            <Button variant="outline" className="flex items-center gap-1">
+            <Button
+              variant="outline"
+              className="flex items-center gap-1 w-full sm:w-auto"
+            >
               <span>Export</span>
             </Button>
           </div>
         </div>
 
-        <div className="rounded-md border overflow-hidden">
-          <Table>
+        <div className="rounded-md border overflow-x-auto ">
+          <Table className="min-w-[600px]">
             <TableHeader>
               <TableRow>
                 <TableHead className="w-12">
@@ -153,35 +157,36 @@ export function UsersTable() {
                             .join("")}
                         </AvatarFallback>
                       </Avatar>
-                      <span>{user.name}</span>
+                      <span className="truncate max-w-[100px]">
+                        {user.name}
+                      </span>
                     </div>
                   </TableCell>
-                  <TableCell>{user.email}</TableCell>
+                  <TableCell>
+                    <span className="truncate block max-w-[120px]">
+                      {user.email}
+                    </span>
+                  </TableCell>
                   <TableCell>{user.signUpMethod}</TableCell>
                   <TableCell>{user.totalDeliveries}</TableCell>
                   <TableCell className="text-right">
-                    <div className="flex justify-end gap-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="h-8 px-3 text-xs bg-blue-50 text-blue-700 border-blue-100 hover:bg-blue-100 hover:text-blue-800"
-                      >
-                        View
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="h-8 px-3 text-xs bg-blue-50 text-blue-700 border-blue-100 hover:bg-blue-100 hover:text-blue-800"
-                      >
-                        History
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="h-8 px-3 text-xs bg-teal-50 text-teal-700 border-teal-100 hover:bg-teal-100 hover:text-teal-800"
-                      >
-                        Support
-                      </Button>
+                    <div className="flex flex-col sm:flex-row justify-end gap-2">
+                      <Link href={`/users/${user.id}`}>
+                        <Button variant="secondary" size="sm">
+                          View
+                        </Button>
+                      </Link>
+
+                      <Link href="/users/recent-trips">
+                        <Button variant="secondary" size="sm">
+                          History
+                        </Button>
+                      </Link>
+                      <Link href="/users/support-requests">
+                        <Button size="sm" variant="secondary">
+                          Support
+                        </Button>
+                      </Link>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -190,8 +195,8 @@ export function UsersTable() {
           </Table>
         </div>
 
-        <div className="flex items-center justify-between mt-4">
-          <div className="text-sm text-gray-500">
+        <div className="flex flex-col sm:flex-row items-center justify-between mt-4 gap-2 w-full ">
+          <div className="text-sm text-gray-500 text-center sm:text-left w-full sm:w-auto">
             Showing {indexOfFirstUser + 1} to{" "}
             {Math.min(indexOfLastUser, userData.length)} of {userData.length}{" "}
             entries

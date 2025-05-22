@@ -3,19 +3,18 @@
 import { useState } from "react";
 import type React from "react";
 
-import { AppSidebar } from "@/components/app-sidebar";
 import { DashboardHeader } from "@/components/dashboard-header";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
+import Sidebar from "./app-sidebar";
 
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="flex min-h-screen bg-gray-50 w-screen">
-      {/* Desktop Sidebar */}
-      <div className="hidden md:block w-[260px] shrink-0">
-        <AppSidebar />
+    <div className="flex h-screen bg-gray-50 w-screen overflow-auto">
+      <div className="hidden md:block ">
+        <Sidebar />
       </div>
 
       {/* Mobile Sidebar Drawer */}
@@ -26,7 +25,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
           </button>
         </SheetTrigger>
         <SheetContent side="left" className="p-0 w-[260px]">
-          <AppSidebar />
+          <Sidebar />
         </SheetContent>
       </Sheet>
 
