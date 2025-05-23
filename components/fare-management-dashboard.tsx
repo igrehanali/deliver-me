@@ -1,7 +1,6 @@
 "use client";
 
 import type React from "react";
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,6 +14,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { DollarSign, Percent } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+  DialogClose,
+} from "@/components/ui/dialog";
 
 // Define the vehicle pricing data type
 type VehiclePricing = {
@@ -46,6 +53,14 @@ export function FareManagementDashboard() {
     initialVehiclePricing
   );
 
+  // State for dialog
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [editingVehicle, setEditingVehicle] = useState<VehiclePricing | null>(
+    null
+  );
+  const [editBaseFee, setEditBaseFee] = useState("");
+  const [editPricePerKm, setEditPricePerKm] = useState("");
+
   // Function to handle fee updates
   const handleFeeUpdate = (
     fee: string,
@@ -55,6 +70,32 @@ export function FareManagementDashboard() {
     // For now, we'll just update the state
     console.log(`Updated fee to ${fee}`);
     // You could show a success toast here
+  };
+
+  // Open dialog and set editing vehicle
+  const handleEditClick = (vehicle: VehiclePricing) => {
+    setEditingVehicle(vehicle);
+    setEditBaseFee(vehicle.baseFee.toString());
+    setEditPricePerKm(vehicle.pricePerKm.toString());
+    setEditDialogOpen(true);
+  };
+
+  // Update vehicle pricing
+  const handleUpdateVehicle = () => {
+    if (!editingVehicle) return;
+    setVehiclePricing((prev) =>
+      prev.map((v) =>
+        v.id === editingVehicle.id
+          ? {
+              ...v,
+              baseFee: Number(editBaseFee),
+              pricePerKm: Number(editPricePerKm),
+            }
+          : v
+      )
+    );
+    setEditDialogOpen(false);
+    setEditingVehicle(null);
   };
 
   return (
@@ -222,7 +263,11 @@ export function FareManagementDashboard() {
                   <TableCell>{vehicle.baseFee}</TableCell>
                   <TableCell>{vehicle.pricePerKm}</TableCell>
                   <TableCell>
-                    <Button variant="outline" size="sm">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleEditClick(vehicle)}
+                    >
                       Edit
                     </Button>
                   </TableCell>
@@ -232,6 +277,50 @@ export function FareManagementDashboard() {
           </Table>
         </CardContent>
       </Card>
+
+      {/* Edit Vehicle Dialog */}
+      <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit Pricing for {editingVehicle?.type}</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                Base Fee ($)
+              </label>
+              <Input
+                type="number"
+                value={editBaseFee}
+                onChange={(e) => setEditBaseFee(e.target.value)}
+                min={0}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                Price per km ($)
+              </label>
+              <Input
+                type="number"
+                value={editPricePerKm}
+                onChange={(e) => setEditPricePerKm(e.target.value)}
+                min={0}
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button variant="outline">Cancel</Button>
+            </DialogClose>
+            <Button
+              className="bg-teal-700 hover:bg-teal-800"
+              onClick={handleUpdateVehicle}
+            >
+              Update
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

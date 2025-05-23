@@ -125,6 +125,7 @@
 //     </Sidebar>
 //   );
 // }
+
 "use client";
 
 import {
@@ -162,6 +163,7 @@ const navItems = [
   { label: "Analytics", icon: BarChart3, href: "/analytics" },
   { label: "Monitoring", icon: Monitor, href: "/monitoring" },
   { label: "Content", icon: FileText, href: "/content" },
+  { label: "Fraud Detection", icon: Truck, href: "/fraud-detection" },
 ];
 
 const footerItems = [
@@ -176,7 +178,7 @@ export default function Sidebar() {
   return (
     <aside
       className={cn(
-        "h-screen bg-[#066A74] text-white flex flex-col justify-between rounded-r-3xl",
+        "h-screen bg-[#066A74] text-white flex flex-col justify-between rounded-r-3xl overflow-auto",
         isOpen ? "w-64" : "w-16",
         "transition-all duration-300 ease-in-out"
       )}
@@ -211,7 +213,7 @@ export default function Sidebar() {
                 <Button
                   variant="ghost"
                   className={cn(
-                    "w-full justify-start gap-3 text-left hover:bg-white hover:text-[#066A74] my-1",
+                    "w-full justify-start gap-2 text-left hover:bg-white hover:text-[#066A74] my-[2px]",
                     isActive
                       ? "bg-white text-[#066A74] font-semibold border-l-4 border-[#A7E3EA]"
                       : "text-white"
