@@ -1,131 +1,3 @@
-// "use client";
-
-// import Link from "next/link";
-// import { usePathname } from "next/navigation";
-// import {
-//   BarChart3,
-//   Bell,
-//   ChevronLeft,
-//   FileText,
-//   HelpCircle,
-//   LayoutDashboard,
-//   MonitorSmartphone,
-//   Settings,
-//   ShieldAlert,
-//   Truck,
-//   Users,
-//   Wallet,
-// } from "lucide-react";
-
-// import {
-//   Sidebar,
-//   SidebarContent,
-//   SidebarFooter,
-//   SidebarMenu,
-//   SidebarMenuBadge,
-//   SidebarMenuButton,
-//   SidebarMenuItem,
-//   SidebarRail,
-//   SidebarTrigger,
-// } from "@/components/ui/sidebar";
-
-// import {
-//   Tooltip,
-//   TooltipContent,
-//   TooltipProvider,
-//   TooltipTrigger,
-// } from "@/components/ui/tooltip";
-
-// const menuItems = [
-//   { label: "Dashboard", icon: LayoutDashboard, href: "/" },
-//   { label: "Users", icon: Users, href: "/users" },
-//   { label: "Drivers", icon: Truck, href: "/drivers", badge: "24" },
-//   { label: "Deliveries", icon: Truck, href: "/deliveries" },
-//   { label: "Fare Management", icon: Wallet, href: "/fare-management" },
-//   { label: "Disputes", icon: ShieldAlert, href: "/disputes" },
-//   { label: "Notifications", icon: Bell, href: "/notifications" },
-//   { label: "Analytics", icon: BarChart3, href: "/analytics" },
-//   { label: "Monitoring", icon: MonitorSmartphone, href: "/monitoring" },
-//   { label: "Content", icon: FileText, href: "/content" },
-// ];
-
-// const footerItems = [
-//   { label: "Support", icon: HelpCircle, href: "/support" },
-//   { label: "Settings", icon: Settings, href: "/settings" },
-// ];
-
-// export function AppSidebar() {
-//   const pathname = usePathname();
-
-//   const isActive = (path: string) => pathname === path;
-
-//   const renderMenuItem = ({
-//     label,
-//     icon: Icon,
-//     href,
-//     badge,
-//   }: {
-//     label: string;
-//     icon: React.ElementType;
-//     href: string;
-//     badge?: string;
-//   }) => {
-//     const active = isActive(href);
-//     const baseClasses = active
-//       ? "bg-white text-teal-800 "
-//       : "hover:bg-teal-700 text-white";
-
-//     return (
-//       <SidebarMenuItem key={label}>
-//         <SidebarMenuButton asChild isActive={active}>
-//           <Link
-//             href={href}
-//             className={`flex items-center gap-2 rounded px-3 py-2 ${baseClasses}`}
-//           >
-//             <TooltipProvider delayDuration={200}>
-//               <Tooltip>
-//                 <TooltipTrigger asChild>
-//                   <Icon className="h-5 w-5 shrink-0" />
-//                 </TooltipTrigger>
-//                 <TooltipContent
-//                   side="right"
-//                   className="group-[.collapsed]:block hidden"
-//                 >
-//                   {label}
-//                 </TooltipContent>
-//               </Tooltip>
-//             </TooltipProvider>
-
-//             <span className="group-[.collapsed]:hidden">{label}</span>
-//           </Link>
-//         </SidebarMenuButton>
-//       </SidebarMenuItem>
-//     );
-//   };
-
-//   return (
-//     <Sidebar className="bg-[#076271] text-white border-none">
-//       {/* Header */}
-//       <div className="flex items-center justify-between p-4 h-16">
-//         <img src="/logo.png" alt="deliver me" className="h-6" />
-//       </div>
-
-//       {/* Main Menu */}
-//       <SidebarContent>
-//         <SidebarMenu>{menuItems.map(renderMenuItem)}</SidebarMenu>
-//       </SidebarContent>
-
-//       {/* Footer */}
-//       <SidebarFooter>
-//         <SidebarMenu>{footerItems.map(renderMenuItem)}</SidebarMenu>
-//       </SidebarFooter>
-
-//       {/* Rail View */}
-//       <SidebarRail />
-//     </Sidebar>
-//   );
-// }
-
 "use client";
 
 import {
@@ -178,42 +50,41 @@ export default function Sidebar() {
   return (
     <aside
       className={cn(
-        "h-screen bg-[#066A74] text-white flex flex-col justify-between rounded-r-3xl overflow-auto",
-        isOpen ? "w-64" : "w-16",
-        "transition-all duration-300 ease-in-out"
+        "md:h-screen h-full bg-[#066A74] text-white flex flex-col transition-all duration-300 ease-in-out",
+        isOpen ? "w-[260px]" : "w-16",
+        "md:rounded-r-3xl"
       )}
     >
-      <div>
-        {/* Top branding and toggle */}
-        <div className="flex items-center justify-between p-4">
-          <span className="text-lg font-semibold tracking-wide">
-            {isOpen && (
-              <img
-                src="/logo.png"
-                alt="DeliverMee Logo"
-                className="h-10 mx-auto"
-              />
-            )}
-          </span>
-          <button
-            className="text-white text-sm md:block hidden"
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            {isOpen ? <ChevronLeft /> : <ChevronRight />}
-          </button>
-        </div>
+      {/* Top branding and toggle */}
+      <div className="flex items-center justify-between p-4">
+        {isOpen ? (
+          <img
+            src="/logo.png"
+            alt="DeliverMee Logo"
+            className="h-7 md:h-10 w-auto"
+          />
+        ) : (
+          <span className="text-white font-bold text-xl">D</span> // Optional mini logo
+        )}
+        <button
+          className="text-white text-sm md:block hidden"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          {isOpen ? <ChevronLeft /> : <ChevronRight />}
+        </button>
+      </div>
 
-        {/* Main nav */}
+      {/* Nav Section */}
+      <div className="flex-1 overflow-y-auto">
         <nav className="space-y-1 px-2">
           {navItems.map((item, i) => {
             const isActive = pathname === item.href;
-
             return (
               <Link href={item.href} key={i}>
                 <Button
                   variant="ghost"
                   className={cn(
-                    "w-full justify-start gap-2 text-left hover:bg-white hover:text-[#066A74] my-[2px]",
+                    "w-full justify-start gap-2 text-left my-[2px] hover:bg-white hover:text-[#066A74]",
                     isActive
                       ? "bg-white text-[#066A74] font-semibold border-l-4 border-[#A7E3EA]"
                       : "text-white"
@@ -240,8 +111,8 @@ export default function Sidebar() {
         </nav>
       </div>
 
-      {/* Footer nav */}
-      <div className="space-y-1 px-2 pb-4">
+      {/* Footer Section */}
+      <div className="px-2 py-4 border-t border-white/20">
         {footerItems.map((item, i) => {
           const isActive = pathname === item.href;
           return (

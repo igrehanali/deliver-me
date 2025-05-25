@@ -23,7 +23,6 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 
-// Define the vehicle pricing data type
 type VehiclePricing = {
   id: number;
   type: string;
@@ -31,7 +30,6 @@ type VehiclePricing = {
   pricePerKm: number;
 };
 
-// Sample vehicle pricing data
 const initialVehiclePricing: VehiclePricing[] = [
   { id: 1, type: "SUV", baseFee: 10, pricePerKm: 8 },
   { id: 2, type: "Pickup Truck", baseFee: 10, pricePerKm: 8 },
@@ -41,19 +39,16 @@ const initialVehiclePricing: VehiclePricing[] = [
 ];
 
 export function FareManagementDashboard() {
-  // State for fee values
   const [serviceFee, setServiceFee] = useState("10");
   const [driverPayment, setDriverPayment] = useState("10");
   const [deliverMeePayment, setDeliverMeePayment] = useState("10");
   const [handlingFee, setHandlingFee] = useState("10");
   const [hstFee, setHstFee] = useState("10");
 
-  // State for vehicle pricing
   const [vehiclePricing, setVehiclePricing] = useState<VehiclePricing[]>(
     initialVehiclePricing
   );
 
-  // State for dialog
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [editingVehicle, setEditingVehicle] = useState<VehiclePricing | null>(
     null
@@ -61,18 +56,13 @@ export function FareManagementDashboard() {
   const [editBaseFee, setEditBaseFee] = useState("");
   const [editPricePerKm, setEditPricePerKm] = useState("");
 
-  // Function to handle fee updates
   const handleFeeUpdate = (
     fee: string,
     setFee: React.Dispatch<React.SetStateAction<string>>
   ) => {
-    // Here you would typically make an API call to update the fee
-    // For now, we'll just update the state
     console.log(`Updated fee to ${fee}`);
-    // You could show a success toast here
   };
 
-  // Open dialog and set editing vehicle
   const handleEditClick = (vehicle: VehiclePricing) => {
     setEditingVehicle(vehicle);
     setEditBaseFee(vehicle.baseFee.toString());
@@ -80,7 +70,6 @@ export function FareManagementDashboard() {
     setEditDialogOpen(true);
   };
 
-  // Update vehicle pricing
   const handleUpdateVehicle = () => {
     if (!editingVehicle) return;
     setVehiclePricing((prev) =>
@@ -98,145 +87,80 @@ export function FareManagementDashboard() {
     setEditingVehicle(null);
   };
 
+  const FeeCard = ({
+    title,
+    value,
+    onChange,
+    onUpdate,
+    icon,
+  }: {
+    title: string;
+    value: string;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onUpdate: () => void;
+    icon: React.ReactNode;
+  }) => (
+    <Card className="w-full">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-lg font-medium">{title}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="flex items-center">{icon}</div>
+          <Input value={value} onChange={onChange} className="w-28" />
+          <Button className="bg-teal-700 hover:bg-teal-800" onClick={onUpdate}>
+            Update
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
+
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       {/* Percentage-based fees */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-        {/* Service Fee */}
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-lg font-medium">Service Fee</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center gap-2">
-              <div className="flex items-center">
-                <Percent className="h-5 w-5 text-gray-500 mr-2" />
-              </div>
-              <Input
-                value={serviceFee}
-                onChange={(e) => setServiceFee(e.target.value)}
-                className="w-32"
-              />
-              <Button
-                className="bg-teal-700 hover:bg-teal-800"
-                onClick={() => handleFeeUpdate(serviceFee, setServiceFee)}
-              >
-                Update
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Driver Payment */}
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-lg font-medium">
-              Driver Payment
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center gap-2">
-              <div className="flex items-center">
-                <Percent className="h-5 w-5 text-gray-500 mr-2" />
-              </div>
-              <Input
-                value={driverPayment}
-                onChange={(e) => setDriverPayment(e.target.value)}
-                className="w-32"
-              />
-              <Button
-                className="bg-teal-700 hover:bg-teal-800"
-                onClick={() => handleFeeUpdate(driverPayment, setDriverPayment)}
-              >
-                Update
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* DeliverMee Payment */}
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-lg font-medium">
-              DeliverMee Payment
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center gap-2">
-              <div className="flex items-center">
-                <Percent className="h-5 w-5 text-gray-500 mr-2" />
-              </div>
-              <Input
-                value={deliverMeePayment}
-                onChange={(e) => setDeliverMeePayment(e.target.value)}
-                className="w-32"
-              />
-              <Button
-                className="bg-teal-700 hover:bg-teal-800"
-                onClick={() =>
-                  handleFeeUpdate(deliverMeePayment, setDeliverMeePayment)
-                }
-              >
-                Update
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <FeeCard
+          title="Service Fee"
+          value={serviceFee}
+          onChange={(e) => setServiceFee(e.target.value)}
+          onUpdate={() => handleFeeUpdate(serviceFee, setServiceFee)}
+          icon={<Percent className="h-5 w-5 text-gray-500 mr-2" />}
+        />
+        <FeeCard
+          title="Driver Payment"
+          value={driverPayment}
+          onChange={(e) => setDriverPayment(e.target.value)}
+          onUpdate={() => handleFeeUpdate(driverPayment, setDriverPayment)}
+          icon={<Percent className="h-5 w-5 text-gray-500 mr-2" />}
+        />
+        <FeeCard
+          title="DeliverMee Payment"
+          value={deliverMeePayment}
+          onChange={(e) => setDeliverMeePayment(e.target.value)}
+          onUpdate={() =>
+            handleFeeUpdate(deliverMeePayment, setDeliverMeePayment)
+          }
+          icon={<Percent className="h-5 w-5 text-gray-500 mr-2" />}
+        />
       </div>
 
       {/* Fixed and percentage fees */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Handling Fee */}
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-lg font-medium">Handling Fee</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center gap-2">
-              <div className="flex items-center">
-                <DollarSign className="h-5 w-5 text-gray-500 mr-2" />
-              </div>
-              <Input
-                value={handlingFee}
-                onChange={(e) => setHandlingFee(e.target.value)}
-                className="w-32"
-              />
-              <Button
-                className="bg-teal-700 hover:bg-teal-800"
-                onClick={() => handleFeeUpdate(handlingFee, setHandlingFee)}
-              >
-                Update
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* HST Fee Section */}
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-lg font-medium">
-              HST Fee Section
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center gap-2">
-              <div className="flex items-center">
-                <Percent className="h-5 w-5 text-gray-500 mr-2" />
-              </div>
-              <Input
-                value={hstFee}
-                onChange={(e) => setHstFee(e.target.value)}
-                className="w-32"
-              />
-              <Button
-                className="bg-teal-700 hover:bg-teal-800"
-                onClick={() => handleFeeUpdate(hstFee, setHstFee)}
-              >
-                Update
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <FeeCard
+          title="Handling Fee"
+          value={handlingFee}
+          onChange={(e) => setHandlingFee(e.target.value)}
+          onUpdate={() => handleFeeUpdate(handlingFee, setHandlingFee)}
+          icon={<DollarSign className="h-5 w-5 text-gray-500 mr-2" />}
+        />
+        <FeeCard
+          title="HST Fee"
+          value={hstFee}
+          onChange={(e) => setHstFee(e.target.value)}
+          onUpdate={() => handleFeeUpdate(hstFee, setHstFee)}
+          icon={<Percent className="h-5 w-5 text-gray-500 mr-2" />}
+        />
       </div>
 
       {/* Vehicle-Based Pricing */}
@@ -247,38 +171,40 @@ export function FareManagementDashboard() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Vehicle Type</TableHead>
-                <TableHead>Base Fee ($)</TableHead>
-                <TableHead>Price per km ($)</TableHead>
-                <TableHead>Action</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {vehiclePricing.map((vehicle) => (
-                <TableRow key={vehicle.id}>
-                  <TableCell>{vehicle.type}</TableCell>
-                  <TableCell>{vehicle.baseFee}</TableCell>
-                  <TableCell>{vehicle.pricePerKm}</TableCell>
-                  <TableCell>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleEditClick(vehicle)}
-                    >
-                      Edit
-                    </Button>
-                  </TableCell>
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Vehicle Type</TableHead>
+                  <TableHead>Base Fee ($)</TableHead>
+                  <TableHead>Price per km ($)</TableHead>
+                  <TableHead>Action</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {vehiclePricing.map((vehicle) => (
+                  <TableRow key={vehicle.id}>
+                    <TableCell>{vehicle.type}</TableCell>
+                    <TableCell>{vehicle.baseFee}</TableCell>
+                    <TableCell>{vehicle.pricePerKm}</TableCell>
+                    <TableCell>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleEditClick(vehicle)}
+                      >
+                        Edit
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </CardContent>
       </Card>
 
-      {/* Edit Vehicle Dialog */}
+      {/* Edit Dialog */}
       <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
         <DialogContent>
           <DialogHeader>

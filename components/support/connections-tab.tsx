@@ -4,6 +4,9 @@ import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
+import { FcGoogle } from "react-icons/fc";
+import { SiMailchimp, SiFacebook, SiLinkedin } from "react-icons/si";
+import { FaTwitter, FaTwitterSquare } from "react-icons/fa";
 
 // Define connected account type
 type ConnectedAccount = {
@@ -23,46 +26,44 @@ type SocialAccount = {
   icon: string;
 };
 
-// Initial connected accounts
 const initialConnectedAccounts: ConnectedAccount[] = [
   {
     id: "google",
     name: "Google",
     description: "Calendar and contacts",
     connected: true,
-    icon: "G",
+    icon: "google",
   },
   {
     id: "mailchimp",
     name: "MailChimp",
     description: "Email marketing service",
     connected: true,
-    icon: "M",
+    icon: "mailchimp",
   },
 ];
 
-// Initial social accounts
 const initialSocialAccounts: SocialAccount[] = [
   {
     id: "facebook",
     name: "Facebook",
     status: "Not Connected",
     connected: false,
-    icon: "F",
+    icon: "facebook",
   },
   {
     id: "twitter",
     name: "Twitter",
     status: "Connected",
     connected: true,
-    icon: "T",
+    icon: "twitter",
   },
   {
     id: "linkedin",
     name: "LinkedIn",
     status: "Connected",
     connected: true,
-    icon: "L",
+    icon: "linkedin",
   },
 ];
 
@@ -101,6 +102,22 @@ export function ConnectionsTab() {
       })
     );
   };
+  const renderIcon = (id: string) => {
+    switch (id) {
+      case "google":
+        return <FcGoogle size={24} />;
+      case "mailchimp":
+        return <SiMailchimp size={20} className="text-yellow-600" />;
+      case "facebook":
+        return <SiFacebook size={20} className="text-blue-600" />;
+      case "twitter":
+        return <FaTwitterSquare size={20} className="text-blue-400" />;
+      case "linkedin":
+        return <SiLinkedin size={20} className="text-blue-700" />;
+      default:
+        return <div className="h-6 w-6 bg-gray-300 rounded-full" />;
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -119,9 +136,10 @@ export function ConnectionsTab() {
                 className="flex items-center justify-between"
               >
                 <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center font-bold text-gray-700">
-                    {account.icon}
+                  <div className="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center">
+                    {renderIcon(account.id)}
                   </div>
+
                   <div>
                     <p className="font-medium">{account.name}</p>
                     <p className="text-sm text-gray-500">
@@ -156,8 +174,8 @@ export function ConnectionsTab() {
                 className="flex items-center justify-between"
               >
                 <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center font-bold text-gray-700">
-                    {account.icon}
+                  <div className="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center">
+                    {renderIcon(account.id)}
                   </div>
                   <div>
                     <p className="font-medium">{account.name}</p>

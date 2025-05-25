@@ -132,7 +132,7 @@ export function CheckrTable() {
           </div>
         </div>
 
-        <div className="rounded-md border overflow-hidden w-[90vw] md:w-full">
+        <div className="rounded-md border overflow-hidden ">
           <Table>
             <TableHeader>
               <TableRow>
@@ -170,73 +170,78 @@ export function CheckrTable() {
           </Table>
         </div>
 
-        <div className="flex items-center justify-between mt-4 ">
-          <div className="text-sm text-gray-500">
+        <div className="flex flex-col gap-2 mt-4 w-full sm:flex-row sm:items-center sm:justify-between">
+          {/* Entry Summary */}
+          <div className="text-xs text-gray-500 text-center sm:text-left w-full sm:w-auto">
             Showing {indexOfFirstEntry + 1} to{" "}
             {Math.min(indexOfLastEntry, checkrData.length)} of{" "}
             {checkrData.length} entries
           </div>
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    if (currentPage > 1) setCurrentPage(currentPage - 1);
-                  }}
-                />
-              </PaginationItem>
 
-              {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                const pageNumber = i + 1;
-                return (
-                  <PaginationItem key={pageNumber}>
-                    <PaginationLink
-                      href="#"
-                      isActive={currentPage === pageNumber}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setCurrentPage(pageNumber);
-                      }}
-                    >
-                      {pageNumber}
-                    </PaginationLink>
-                  </PaginationItem>
-                );
-              })}
+          {/* Pagination */}
+          <div className="flex justify-center sm:justify-end w-full overflow-x-auto">
+            <Pagination>
+              <PaginationContent className="flex flex-wrap justify-center sm:justify-end gap-1 text-xs">
+                <PaginationItem>
+                  <PaginationPrevious
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (currentPage > 1) setCurrentPage(currentPage - 1);
+                    }}
+                  />
+                </PaginationItem>
 
-              {totalPages > 5 && (
-                <>
-                  <PaginationItem>
-                    <PaginationEllipsis />
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setCurrentPage(totalPages);
-                      }}
-                    >
-                      {totalPages}
-                    </PaginationLink>
-                  </PaginationItem>
-                </>
-              )}
+                {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                  const pageNumber = i + 1;
+                  return (
+                    <PaginationItem key={pageNumber}>
+                      <PaginationLink
+                        href="#"
+                        isActive={currentPage === pageNumber}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setCurrentPage(pageNumber);
+                        }}
+                      >
+                        {pageNumber}
+                      </PaginationLink>
+                    </PaginationItem>
+                  );
+                })}
 
-              <PaginationItem>
-                <PaginationNext
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    if (currentPage < totalPages)
-                      setCurrentPage(currentPage + 1);
-                  }}
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
+                {totalPages > 5 && (
+                  <>
+                    <PaginationItem className="hidden xs:inline">
+                      <PaginationEllipsis />
+                    </PaginationItem>
+                    <PaginationItem className="hidden xs:inline">
+                      <PaginationLink
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setCurrentPage(totalPages);
+                        }}
+                      >
+                        {totalPages}
+                      </PaginationLink>
+                    </PaginationItem>
+                  </>
+                )}
+
+                <PaginationItem>
+                  <PaginationNext
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (currentPage < totalPages)
+                        setCurrentPage(currentPage + 1);
+                    }}
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          </div>
         </div>
       </CardContent>
     </Card>
