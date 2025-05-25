@@ -2,16 +2,80 @@
 
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { User, Shield, CreditCard, Bell, Link } from "lucide-react";
+import {
+  User,
+  ShieldCheck,
+  CreditCard,
+  BellRing,
+  Link2,
+  CheckCircle,
+  Truck,
+  Users,
+} from "lucide-react";
+
 import { AccountTab } from "./support/account-tab";
 import { SecurityTab } from "./support/security-tab";
 import { BillingTab } from "./support/billing-tab";
 import { NotificationsTab } from "./support/notifications-tab";
 import { ConnectionsTab } from "./support/connections-tab";
+import { CheckrTable } from "./support/checkr-table";
+import { StripeDriverTable } from "./support/stripe-driver-table";
+import { StripeUserTable } from "./support/stripe-user-table";
 
 interface SupportTabsProps {
   defaultTab?: string;
 }
+
+const tabConfig = [
+  {
+    value: "account",
+    label: "Account",
+    icon: User,
+    content: <AccountTab />,
+  },
+  {
+    value: "security",
+    label: "Security",
+    icon: ShieldCheck,
+    content: <SecurityTab />,
+  },
+  {
+    value: "billing",
+    label: "Billing",
+    icon: CreditCard,
+    content: <BillingTab />,
+  },
+  {
+    value: "notifications",
+    label: "Notifications",
+    icon: BellRing,
+    content: <NotificationsTab />,
+  },
+  {
+    value: "connections",
+    label: "Connections",
+    icon: Link2,
+    content: <ConnectionsTab />,
+  },
+  {
+    value: "checker",
+    label: "Checker",
+    icon: CheckCircle,
+    content: <CheckrTable />,
+  },
+  {
+    value: "stripe-drivers",
+    label: "Stripe Drivers",
+    icon: Truck,
+    content: <StripeDriverTable />,
+  },
+  {
+    value: "stripe-users",
+    label: "Stripe Users",
+    icon: Users,
+    content: <StripeUserTable />,
+  },
+];
 
 export function SupportTabs({ defaultTab = "account" }: SupportTabsProps) {
   const [activeTab, setActiveTab] = useState(defaultTab);
@@ -22,61 +86,24 @@ export function SupportTabs({ defaultTab = "account" }: SupportTabsProps) {
       onValueChange={setActiveTab}
       className="w-full"
     >
-      {/* Responsive TabsList */}
-      <TabsList className="flex flex-wrap sm:grid sm:grid-cols-5 gap-2 sm:gap-0 overflow-x-auto scrollbar-hide mb-4 sm:mb-6 px-2 sm:px-0">
-        <TabsTrigger
-          value="account"
-          className="flex items-center gap-1 sm:gap-2 text-sm sm:text-base"
-        >
-          <User className="h-4 w-4" />
-          <span>Account</span>
-        </TabsTrigger>
-        <TabsTrigger
-          value="security"
-          className="flex items-center gap-1 sm:gap-2 text-sm sm:text-base"
-        >
-          <Shield className="h-4 w-4" />
-          <span>Security</span>
-        </TabsTrigger>
-        <TabsTrigger
-          value="billing"
-          className="flex items-center gap-1 sm:gap-2 text-sm sm:text-base"
-        >
-          <CreditCard className="h-4 w-4" />
-          <span>Billing</span>
-        </TabsTrigger>
-        <TabsTrigger
-          value="notifications"
-          className="flex items-center gap-1 sm:gap-2 text-sm sm:text-base"
-        >
-          <Bell className="h-4 w-4" />
-          <span>Notifications</span>
-        </TabsTrigger>
-        <TabsTrigger
-          value="connections"
-          className="flex items-center gap-1 sm:gap-2 text-sm sm:text-base"
-        >
-          <Link className="h-4 w-4" />
-          <span>Connections</span>
-        </TabsTrigger>
+      <TabsList className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-8 gap-2 sm:gap-3 lg:gap-4 w-full mb-4 sm:mb-6 px-2 sm:px-0 md:h-auto h-40">
+        {tabConfig.map(({ value, label, icon: Icon }) => (
+          <TabsTrigger
+            key={value}
+            value={value}
+            className="flex items-center gap-2 text-sm sm:text-base py-1"
+          >
+            <Icon className="h-5 w-5" />
+            <span>{label}</span>
+          </TabsTrigger>
+        ))}
       </TabsList>
 
-      {/* Tab Content */}
-      <TabsContent value="account">
-        <AccountTab />
-      </TabsContent>
-      <TabsContent value="security">
-        <SecurityTab />
-      </TabsContent>
-      <TabsContent value="billing">
-        <BillingTab />
-      </TabsContent>
-      <TabsContent value="notifications">
-        <NotificationsTab />
-      </TabsContent>
-      <TabsContent value="connections">
-        <ConnectionsTab />
-      </TabsContent>
+      {tabConfig.map(({ value, content }) => (
+        <TabsContent key={value} value={value}>
+          {content}
+        </TabsContent>
+      ))}
     </Tabs>
   );
 }
