@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -30,6 +30,11 @@ export function AccountTab() {
     timezone: "",
     currency: "",
   });
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [photoPreview, setPhotoPreview] = useState<string>(
+    "https://i.pravatar.cc/160"
+  );
+  const [originalPhoto] = useState<string>("https://i.pravatar.cc/1");
 
   const [confirmDeactivation, setConfirmDeactivation] = useState(false);
 
@@ -51,6 +56,37 @@ export function AccountTab() {
     }
   };
 
+  const handleUploadClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!["image/jpeg", "image/png", "image/gif"].includes(file.type)) {
+      alert("Only JPG, PNG, or GIF images are allowed.");
+      return;
+    }
+
+    if (file.size > 800 * 1024) {
+      alert("Maximum allowed size is 800KB.");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPhotoPreview(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleReset = () => {
+    setPhotoPreview(originalPhoto);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
   return (
     <div className="space-y-6">
       {/* Profile Photo */}
@@ -58,9 +94,10 @@ export function AccountTab() {
         <CardContent className="p-6">
           <div className="flex flex-col md:flex-row gap-6 items-start">
             <Avatar className="h-20 w-20">
-              <AvatarImage src="https://i.pravatar.cc/160" alt="Profile" />
+              <AvatarImage src={photoPreview} alt="Profile" />
               <AvatarFallback>JD</AvatarFallback>
             </Avatar>
+
             <div className="space-y-4">
               <div className="flex items-center gap-2">
                 <InfoIcon className="h-5 w-5 text-teal-600" />
@@ -68,15 +105,31 @@ export function AccountTab() {
                   External Services Info
                 </span>
               </div>
+
               <div className="flex flex-wrap gap-2">
-                <Button className="bg-teal-700 hover:bg-teal-800">
+                <Button
+                  onClick={handleUploadClick}
+                  className="bg-teal-700 hover:bg-teal-800"
+                >
                   Upload New Photo
                 </Button>
-                <Button variant="outline">Reset</Button>
+                <Button variant="outline" onClick={handleReset}>
+                  Reset
+                </Button>
               </div>
+
               <p className="text-xs text-gray-500">
                 Allowed JPG, GIF or PNG. Max size of 800K
               </p>
+
+              {/* Hidden file input */}
+              <input
+                type="file"
+                accept="image/jpeg,image/png,image/gif"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                className="hidden"
+              />
             </div>
           </div>
         </CardContent>
@@ -241,6 +294,7 @@ export function AccountTab() {
                   <SelectItem value="usd">USD ($)</SelectItem>
                   <SelectItem value="eur">EUR (€)</SelectItem>
                   <SelectItem value="gbp">GBP (£)</SelectItem>
+                  <SelectItem value="cad">CAD ($)</SelectItem>
                 </SelectContent>
               </Select>
             </div>

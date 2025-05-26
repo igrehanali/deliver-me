@@ -21,8 +21,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useRouter } from "next/navigation";
 
 export function DashboardOverview() {
+  const router = useRouter();
   return (
     <div className="p-6">
       <h1 className="text-2xl font-semibold text-teal-800 mb-6">Overview</h1>
@@ -44,7 +46,10 @@ export function DashboardOverview() {
               <div className="text-3xl font-bold text-teal-700 mb-4">
                 $48.9k
               </div>
-              <Button className="bg-teal-700 hover:bg-teal-800">
+              <Button
+                className="bg-teal-700 hover:bg-teal-800"
+                onClick={() => router.push("/analytics")}
+              >
                 View Sales
               </Button>
             </div>

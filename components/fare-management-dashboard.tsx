@@ -45,10 +45,10 @@ export function FareManagementDashboard() {
   const [handlingFee, setHandlingFee] = useState("10");
   const [hstFee, setHstFee] = useState("10");
 
+  const [editingField, setEditingField] = useState<string | null>(null);
   const [vehiclePricing, setVehiclePricing] = useState<VehiclePricing[]>(
     initialVehiclePricing
   );
-
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [editingVehicle, setEditingVehicle] = useState<VehiclePricing | null>(
     null
@@ -61,6 +61,7 @@ export function FareManagementDashboard() {
     setFee: React.Dispatch<React.SetStateAction<string>>
   ) => {
     console.log(`Updated fee to ${fee}`);
+    // Potentially send to API here
   };
 
   const handleEditClick = (vehicle: VehiclePricing) => {
@@ -88,39 +89,67 @@ export function FareManagementDashboard() {
   };
 
   const FeeCard = ({
+    id,
     title,
     value,
     onChange,
     onUpdate,
     icon,
   }: {
+    id: string;
     title: string;
     value: string;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onUpdate: () => void;
     icon: React.ReactNode;
-  }) => (
-    <Card className="w-full">
-      <CardHeader className="pb-3">
-        <CardTitle className="text-lg font-medium">{title}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="flex flex-wrap items-center gap-3">
-          <div className="flex items-center">{icon}</div>
-          <Input value={value} onChange={onChange} className="w-28" />
-          <Button className="bg-teal-700 hover:bg-teal-800" onClick={onUpdate}>
-            Update
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
-  );
+  }) => {
+    const isEditing = editingField === id;
+
+    const handleToggle = () => {
+      if (isEditing) {
+        onUpdate();
+        setEditingField(null);
+      } else {
+        setEditingField(id);
+      }
+    };
+
+    return (
+      <Card className="w-full">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-lg font-medium">{title}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="flex items-center">{icon}</div>
+            <Input
+              value={value}
+              onChange={onChange}
+              readOnly={!isEditing}
+              className={`w-28 ${!isEditing ? "bg-gray-100" : ""}`}
+            />
+            <Button
+              onClick={handleToggle}
+              className={
+                isEditing
+                  ? "bg-green-700 hover:bg-green-800"
+                  : "bg-teal-700 hover:bg-teal-800"
+              }
+            >
+              {isEditing ? "Save" : "Update"}
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  };
 
   return (
     <div className="space-y-6">
-      {/* Percentage-based fees */}
+      {/* Percentage-based Fees */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <FeeCard
+          id="serviceFee"
           title="Service Fee"
           value={serviceFee}
           onChange={(e) => setServiceFee(e.target.value)}
@@ -128,6 +157,7 @@ export function FareManagementDashboard() {
           icon={<Percent className="h-5 w-5 text-gray-500 mr-2" />}
         />
         <FeeCard
+          id="driverPayment"
           title="Driver Payment"
           value={driverPayment}
           onChange={(e) => setDriverPayment(e.target.value)}
@@ -135,6 +165,7 @@ export function FareManagementDashboard() {
           icon={<Percent className="h-5 w-5 text-gray-500 mr-2" />}
         />
         <FeeCard
+          id="deliverMeePayment"
           title="DeliverMee Payment"
           value={deliverMeePayment}
           onChange={(e) => setDeliverMeePayment(e.target.value)}
@@ -145,9 +176,10 @@ export function FareManagementDashboard() {
         />
       </div>
 
-      {/* Fixed and percentage fees */}
+      {/* Fixed and Percentage Fees */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <FeeCard
+          id="handlingFee"
           title="Handling Fee"
           value={handlingFee}
           onChange={(e) => setHandlingFee(e.target.value)}
@@ -155,6 +187,7 @@ export function FareManagementDashboard() {
           icon={<DollarSign className="h-5 w-5 text-gray-500 mr-2" />}
         />
         <FeeCard
+          id="hstFee"
           title="HST Fee"
           value={hstFee}
           onChange={(e) => setHstFee(e.target.value)}
@@ -204,7 +237,7 @@ export function FareManagementDashboard() {
         </CardContent>
       </Card>
 
-      {/* Edit Dialog */}
+      {/* Vehicle Pricing Edit Dialog */}
       <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
         <DialogContent>
           <DialogHeader>

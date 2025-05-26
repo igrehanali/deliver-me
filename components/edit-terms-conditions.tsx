@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
+import { useRouter } from "next/navigation";
 
 export function EditTermsConditions() {
   const [termsContent, setTermsContent] = useState<string>(
@@ -45,8 +46,12 @@ These Terms shall be governed by and construed in accordance with the laws of [J
 If you have any questions about these Terms, please contact us at support@delivermee.com.`
   );
 
+  const router = useRouter();
   const handleSave = () => {
-    console.log("Saving terms and conditions:", termsContent);
+    // Here you would typically make an API call to save the privacy policy content
+    // console.log("Saving privacy policy:", privacyContent);
+    router.push("/content"); // Redirect to the content page after saving
+    // You could show a success toast here
   };
 
   return (
@@ -66,12 +71,14 @@ If you have any questions about these Terms, please contact us at support@delive
               THESE ARE THE PLATFORM'S TERMS & CONDITIONS. PLEASE UPDATE
               ACCORDINGLY.
             </h2>
+            {/* <Link href="/content"> */}
             <Button
               className="bg-teal-700 hover:bg-teal-800"
               onClick={handleSave}
             >
               Save Changes
             </Button>
+            {/* </Link> */}
           </div>
 
           <Textarea

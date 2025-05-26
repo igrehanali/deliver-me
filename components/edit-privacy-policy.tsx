@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
+import { useRouter } from "next/navigation";
 
 export function EditPrivacyPolicy() {
   const [privacyContent, setPrivacyContent] = useState<string>(
@@ -66,10 +67,11 @@ We may update this Privacy Policy from time to time. We will notify you of any c
 
 If you have questions about this Privacy Policy, please contact us at privacy@delivermee.com.`
   );
-
+  const router = useRouter();
   const handleSave = () => {
     // Here you would typically make an API call to save the privacy policy content
     console.log("Saving privacy policy:", privacyContent);
+    router.push("/content"); // Redirect to the content page after saving
     // You could show a success toast here
   };
 
@@ -89,12 +91,14 @@ If you have questions about this Privacy Policy, please contact us at privacy@de
             <h2 className="text-sm font-semibold text-gray-700 uppercase mb-4">
               THIS IS THE PLATFORM'S PRIVACY POLICY. PLEASE UPDATE ACCORDINGLY.
             </h2>
+            {/* <link href="/content"> */}
             <Button
               className="bg-teal-700 hover:bg-teal-800"
               onClick={handleSave}
             >
               Save Changes
             </Button>
+            {/* </link> */}
           </div>
 
           <Textarea
