@@ -59,7 +59,7 @@ const tabConfig = [
   },
   {
     value: "checker",
-    label: "Checker",
+    label: "Checkr",
     icon: CheckCircle,
     content: <CheckrTable />,
   },
