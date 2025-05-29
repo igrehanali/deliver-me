@@ -146,7 +146,7 @@ export function CheckrTable() {
                   />
                 </TableHead>
                 <TableHead>Checkr ID</TableHead>
-                <TableHead>Checkr Report ID</TableHead>
+                {/* <TableHead>Checkr Report ID</TableHead> */}
                 <TableHead>Driver</TableHead>
                 <TableHead>Checkr Status</TableHead>
               </TableRow>
@@ -161,7 +161,7 @@ export function CheckrTable() {
                     />
                   </TableCell>
                   <TableCell>{entry.checkrId}</TableCell>
-                  <TableCell>{entry.reportId}</TableCell>
+                  {/* <TableCell>{entry.reportId}</TableCell> */}
                   <TableCell>{entry.driver}</TableCell>
                   <TableCell>{getStatusBadge(entry.status)}</TableCell>
                 </TableRow>
